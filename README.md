@@ -21,6 +21,7 @@ Abaixo estão os links para a documentação e para o código-fonte de cada etap
 * [Fase 02: OO Sem Interface](#fase-02) | 📂 [Código Fonte](./src/fase-02-oo-sem-interface/)
 * [Fase 03: OO Com Interface](#fase-03) | 📂 [Código Fonte](./src/fase-03-com-interfaces/)
 * [Fase 04: Repository InMemory](#fase-04) | 📂 [Código Fonte](./src/fase-04-repository-inmemory/)
+* [Fase 04: Repository csv](#fase-05) | 📂 [Código Fonte](./src/fase-05-repository-csv/)
 
 ---
 
@@ -127,3 +128,33 @@ Log de execução mostrando o fluxo completo: Composição (Program) → Serviç
 
 Total de usuários ativos: 2
 ```
+
+---
+
+### <a id="fase-05"></a> 📄 Fase 05: Repository CSV
+[cite_start]**Foco:** Evolução do armazenamento para **persistência em disco** (arquivo CSV), mantendo o desacoplamento via contrato `IRepository` [cite: 102-104].
+
+#### 💡 Decisões de Design
+* [cite_start]**Persistência Física:** Implementação de `UsuarioCsvRepository` lendo e escrevendo em `banco_usuarios.csv` com separador ponto e vírgula (`;`), garantindo que os dados sobrevivam ao reinício da aplicação[cite: 105, 109].
+* [cite_start]**Estratégia de Escrita:** Uso de `AppendAllText` para inserções rápidas (`Add`) e reescrita total do arquivo para operações de edição (`Update/Remove`), superando a volatilidade da memória RAM [cite: 148-154].
+* [cite_start]**Resiliência de I/O:** Verificação defensiva que cria o arquivo automaticamente caso ele não exista na primeira execução, evitando exceções de `FileNotFound` [cite: 144-145].
+* [cite_start]**Transparência no Cliente:** A troca de `InMemory` para `Csv` ocorre apenas na inicialização (`Program.cs`), sem alterar nenhuma linha de código do consumidor ou do serviço [cite: 309-311].
+
+#### ✅ Checklist de Qualidade
+* [cite_start][x] Contrato `IRepository` mantido estritamente igual à fase anterior[cite: 123].
+* [x] Dados persistem corretamente após fechar e abrir o programa.
+* [x] Sistema trata arquivo inexistente sem travar (criação automática).
+* [cite_start][x] Cliente desconhece se está usando memória ou arquivo (inversão de dependência)[cite: 43].
+
+#### 📸 Evidências de Testes
+```text
+Arquivo de banco: .../bin/Debug/net8.0/banco_usuarios.csv
+
+Carregando usuários do arquivo... (Persistência Confirmada)
+
+--- Lista de Usuários ---
+1 - Luciemen (Premium)
+2 - Joao (Padrao)
+```
+
+---
