@@ -187,8 +187,38 @@ USUÁRIO 999 BANIDO DO SISTEMA.
   { "id": 2, "nome": "Joao Silva", "tipoAssinatura": "Padrao" },
   { "id": 3, "nome": "Admin", "tipoAssinatura": "SuperUser" }
 ]
-
 ```
 
 ---
 
+### <a id="fase-07"></a> 🧩 Fase 07: ISP na Prática
+**Foco:** Refatoração de arquitetura aplicando o **Princípio da Segregação de Interfaces (ISP)** para eliminar contratos "gordos" e acoplamento desnecessário.
+
+#### 💡 Decisões de Design
+* [cite_start]**Segregação por Capacidade:** O contrato monolítico `IGestorUsuarioCompleto` foi fatiado em 3 interfaces coesas no **Domínio**: `IGeradorMensagem`, `IFinanceiro` e `IAdministrativo`[cite: 121, 371].
+* **Evolução Arquitetural:** O código da solução foi organizado em pastas `Domain` (para os contratos) e `Implementacoes` (para as classes concretas), separando claramente as abstrações das concretizações.
+* **Segurança de Tipos:** A refatoração moveu a detecção de erros do *runtime* (exceções) para o *compile-time*. Agora é impossível passar um `GestorPadrao` para um método que exige `IFinanceiro`.
+* [cite_start]**Comparativo Didático:** O projeto mantém a pasta `Violacao` (código legado) isolada da `Solucao`, permitindo a comparação direta entre o anti-pattern e a boa prática[cite: 41, 125].
+
+#### ✅ Checklist de Qualidade
+* [x] Eliminação total de `throw new NotImplementedException` nas classes da solução.
+* [x] Classes dependem apenas das interfaces que realmente utilizam (Coesão).
+* [x] Consumo polimórfico seguro demonstrado no `Program.cs`.
+
+#### 📸 Evidências de Testes
+```text
+=== Fase 7: ISP na Prática ===
+
+--- 1. Mensagens de Boas Vindas ---
+Bem-vindo(a), Visitante.
+Parabéns, Visitante, acesso Premium!
+Olá Admin Visitante.
+
+--- 2. Processo de Cobrança ---
+Cobrança efetuada com sucesso.
+
+--- 3. Área Administrativa ---
+Usuário 99 banido pelo Administrador.
+```
+
+---
