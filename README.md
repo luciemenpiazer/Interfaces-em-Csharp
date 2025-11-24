@@ -148,13 +148,18 @@ Total de usuários ativos: 2
 
 #### 📸 Evidências de Testes
 ```text
-Arquivo de banco: .../bin/Debug/net8.0/banco_usuarios.csv
+=== Fase 7: ISP na Prática ===
 
-Carregando usuários do arquivo... (Persistência Confirmada)
+--- Mensagens de Boas Vindas ---
+Bem-vindo(a), UsuárioTeste.
+Parabéns, UsuárioTeste, acesso Premium!
+Olá Admin UsuárioTeste.
 
---- Lista de Usuários ---
-1 - Luciemen (Premium)
-2 - Joao (Padrao)
+--- Processo de Cobrança ---
+Cobrança efetuada com sucesso (via cartão).
+
+--- Área Administrativa ---
+USUÁRIO 999 BANIDO DO SISTEMA.
 ```
 
 ---
