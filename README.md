@@ -22,6 +22,7 @@ Abaixo estão os links para a documentação e para o código-fonte de cada etap
 * [Fase 03: OO Com Interface](#fase-03) | 📂 [Código Fonte](./src/fase-03-com-interfaces/)
 * [Fase 04: Repository InMemory](#fase-04) | 📂 [Código Fonte](./src/fase-04-repository-inmemory/)
 * [Fase 04: Repository csv](#fase-05) | 📂 [Código Fonte](./src/fase-05-repository-csv/)
+* [Fase 04: Repository json](#fase-06) | 📂 [Código Fonte](./src/fase-05-repository-json/)
 
 ---
 
@@ -163,3 +164,31 @@ USUÁRIO 999 BANIDO DO SISTEMA.
 ```
 
 ---
+
+### <a id="fase-06"></a> 📦 Fase 06: Repository JSON
+**Foco:** Persistência estruturada com serialização, preservação de tipos e separação arquitetural entre **Domínio** e **Infraestrutura**.
+
+#### 💡 Decisões de Design
+* **Arquitetura em Camadas:** Separação física do código em pastas `Domain` (Contratos e Entidades Puras) e `Data` (Implementação do Repositório), isolando a regra de negócio de dependências de biblioteca externa.
+* [cite_start]**Serialização Padronizada:** Uso de `System.Text.Json` com `JsonSerializerOptions` configurado para **camelCase** e **identação**, garantindo interoperabilidade e legibilidade humana no arquivo gerado [cite: 352-355].
+* [cite_start]**Preservação de Tipos:** Diferente do CSV, o JSON mantém a tipagem original dos dados (números são tratados como números), eliminando a necessidade de *parsing* manual frágil [cite: 1247-1251].
+* [cite_start]**Resiliência de Arquivo:** O repositório garante a existência de um array vazio `[]` válido caso o arquivo não exista, prevenindo erros de deserialização na primeira execução.
+
+#### ✅ Checklist de Qualidade
+* [x] Entidade `Usuario` (Domain) não possui referências a `System.Text.Json` (Pura).
+* [x] Arquivo `banco_usuarios.json` é gerado com formatação legível (WriteIndented).
+* [x] Troca de implementação no `Program.cs` feita sem alterar nenhuma linha da lógica de negócio.
+* [x] Tratamento correto para arquivo inexistente ou vazio.
+
+#### 📸 Evidências de Testes
+```json
+[
+  { "id": 1, "nome": "Luciemen", "tipoAssinatura": "Premium" },
+  { "id": 2, "nome": "Joao Silva", "tipoAssinatura": "Padrao" },
+  { "id": 3, "nome": "Admin", "tipoAssinatura": "SuperUser" }
+]
+
+```
+
+---
+
